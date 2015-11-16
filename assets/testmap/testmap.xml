@@ -1,0 +1,13 @@
+<Map>
+	<base>base.png</base>
+	<collision>collision.png</collision>
+	<occlude>roof.png</occlude>
+	
+	<collisionKeyR>255</collisionKeyR>	
+	<collisionKeyG>0</collisionKeyG>
+	<collisionKeyB>255</collisionKeyB>
+	
+	<wallKeyR>0</wallKeyR>	
+	<wallKeyG>255</wallKeyG>
+	<wallKeyB>0</wallKeyB>
+</Map>

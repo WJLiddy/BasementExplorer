@@ -36,29 +36,28 @@ public abstract class Entity
     }
 
     //Moves the character based on direction. Interact based on these movements.
-    public void Move(LinkedList<Entity> entities, bool[,] collideMap)
+    public void Move(LinkedList<Entity> entities, CollisionMap collideMap)
     {
-        //move the character.
-        switch (VelocityDirection)
+        //When moving diagonally,
+        //North is moved then the other directions.
+        //This is slightly problematic because at high speeds you may glitch through objects because you go in an L-shape.
+        //move the character
+        if (VelocityDirection == Direction.N || VelocityDirection == Direction.NW || VelocityDirection == Direction.NE)
         {
-            case Direction.N:
-                MoveNorth(entities);
-                break;
-            case Direction.S:
-                MoveSouth(entities);
-                break;
-            case Direction.E:
-                MoveEast(entities);
-                break;
-            case Direction.W:
-                MoveWest(entities);
-                break;
+            if (MoveNorth(entities,collideMap))
+                return;
         }
+         if (VelocityDirection == Direction.S || VelocityDirection == Direction.SW || VelocityDirection == Direction.SE)
+                MoveSouth(entities,collideMap);
+        if (VelocityDirection == Direction.W || VelocityDirection == Direction.SW || VelocityDirection == Direction.NW)
+                 MoveWest(entities,collideMap);
+        if (VelocityDirection == Direction.E || VelocityDirection == Direction.SE || VelocityDirection == Direction.NE)
+                MoveEast(entities,collideMap);
     }
 
-    protected abstract bool Interact(Entity e);
+    protected abstract bool Interact(Entity e, Direction lastMoveStepDirection);
 
-    private bool Interactions(LinkedList<Entity> allEnts)
+    private bool Interactions(LinkedList<Entity> allEnts, Direction lastMoveStepDirection)
     {
         foreach (Entity e in allEnts)
         {
@@ -66,99 +65,142 @@ public abstract class Entity
             if (BasementExplorer.Collide(X, Y, Size, Size, e.X, e.Y, e.Size, e.Size))
             {
                 //They interact with each other. If either value returns true, then halt any other commands.
-                if (Interact(e))
+                if (Interact(e,lastMoveStepDirection))
                     return true;
             }
         }
         return false;
     }
 
-    private void MoveNorth(LinkedList<Entity> e)
+    private bool MoveNorth(LinkedList<Entity> e, CollisionMap c)
     {
         // Move south.
         DeltaY -= Velocity;
         //Check for any interactions.
-        if (Interactions(e))
-            return;
+        if (Interactions(e,Direction.N))
+            return true;
 
         //Move if we have the velocity to.
         while (DeltaY < 0)
         {
+            for (int i = 0; i != Size; i++)
+            {
+                if (c.Collide(X + i, Y - 1))
+                {
+                    DeltaY = 0;
+                    return false;
+                }
+            }
+               
             DeltaY = DeltaY + DeltaScale;
             Y--;
-            if (Interactions(e))
+            if (Interactions(e, Direction.N))
             {
                 DeltaY = DeltaScale / 2;
                 DeltaX = DeltaScale / 2;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
-    private void MoveWest(LinkedList<Entity> e)
+    private bool MoveWest(LinkedList<Entity> e, CollisionMap c)
     {
         // Move south.
         DeltaX -= Velocity;
         //Check for any interactions.
-        if (Interactions(e))
-            return;
+        if (Interactions(e, Direction.W))
+            return true;
 
         //Move if we have the velocity to.
         while (DeltaX < 0)
         {
+            for (int i = 0; i != Size; i++)
+            {
+                if (c.Collide(X - 1, Y + i))
+                {
+                    DeltaX = 0;
+                    return false;
+                }
+            }
             DeltaX = DeltaX + DeltaScale;
             X--;
-            if (Interactions(e))
+            //halt movement.
+            if (Interactions(e, Direction.W))
             {
                 DeltaY = DeltaScale / 2;
                 DeltaX = DeltaScale / 2;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
-    private void MoveEast(LinkedList<Entity> e)
+    private bool MoveEast(LinkedList<Entity> e, CollisionMap c)
     {
         // Move south.
         DeltaX += Velocity;
         //Check for any interactions.
-        if (Interactions(e))
-            return;
+        if (Interactions(e, Direction.E))
+            return true;
 
         //Move if we have the velocity to.
         while (DeltaX >= DeltaScale)
         {
+            for (int i = 0; i != Size; i++)
+            {
+                if (c.Collide(X + Size, Y + i))
+                 {
+                    DeltaX = DeltaScale - 1;
+                    return false;
+                 }
+            }
+
+
+
             DeltaX = DeltaX - DeltaScale;
             X++;
-            if (Interactions(e))
+            if (Interactions(e, Direction.E))
             {
                 DeltaY = DeltaScale / 2;
                 DeltaX = DeltaScale / 2;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
-    private void MoveSouth(LinkedList<Entity> e)
+    private bool MoveSouth(LinkedList<Entity> e, CollisionMap c)
     {
         // Move south.
         DeltaY += Velocity;
         //Check for any interactions.
-        if (Interactions(e))
-            return;
+        if (Interactions(e, Direction.S))
+            return true;
 
         //Move if we have the velocity to.
         while (DeltaY >= DeltaScale)
         {
-            DeltaY = DeltaY - DeltaScale;
+
+            for (int i = 0; i != Size; i++)
+            {
+                if (c.Collide(X + i, Y + Size))
+                {
+                    DeltaY = DeltaScale - 1;
+                    return false;
+                }
+            }
+
+                DeltaY = DeltaY - DeltaScale;
             Y++;
-            if (Interactions(e))
+            if (Interactions(e, Direction.S))
             {
                 DeltaY = DeltaScale / 2;
                 DeltaX = DeltaScale / 2;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public abstract void Draw(PixelFont f, AD2SpriteBatch sb);

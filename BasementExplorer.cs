@@ -1,15 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 public class BasementExplorer : AD2Game
 {
     PixelFont IBMFont;
+    OcclusionMap TestMap;
+    Player P;
 
     // Game Dims.
     public static readonly int BaseWidth = 400;
     public static readonly int BaseHeight = 300;
 
-    public BasementExplorer() : base(BaseWidth, BaseHeight, 60)
+    public static int MapXOffset = 70;
+
+    //Milliseconds. 1000 / 50 = 20
+    public BasementExplorer() : base(BaseWidth, BaseHeight, 20)
     {
         Renderer.Resolution = Renderer.ResolutionType.WindowedLarge;
     }
@@ -24,29 +30,44 @@ public class BasementExplorer : AD2Game
 
     protected override void AD2Logic(int ms, KeyboardState keyboardState, GamePadState[] gamePadState)
     {
-        
+        P.FooMove(keyboardState);
+        //TODO: Name to update.
+        P.Move(new LinkedList<Entity>(), TestMap);
     }
 
     protected override void AD2Draw(AD2SpriteBatch primarySpriteBatch)
     {
+        LinkedList<int[]> coords = new LinkedList<int[]>();
+        int[] coord = new int[] { P.X + (P.Size / 2), P.Y + (P.Size / 2)};
+        coords.AddFirst(coord);
+        /**
         IBMFont.Draw(primarySpriteBatch, " !\"#$%&'()*+,-./",2,2,Color.White);
-        IBMFont.Draw(primarySpriteBatch, "0123456789:;<=>?", 2, 10, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "@ABCDEFGHIJKLMNO", 2, 18, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "PQRSTUVWXYZ[\\]^_", 2, 26, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "`abcdefghijklmno", 2, 34, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "pqrstuvwxyz{|}~", 2, 42, Color.White);
-
-        Utils.drawRect(primarySpriteBatch, 50, 50, 1, 1, Color.Red);
         Utils.drawRect(primarySpriteBatch, 50, 60, 5, 5, Color.Green);
-        Utils.drawRect(primarySpriteBatch, 50, 70, 1, 5, Color.Blue);
-    
-        Utils.drawRect(primarySpriteBatch, 50, 80, 5, 1, Color.White);
-        Utils.drawRect(primarySpriteBatch, 50, 90, 10, 10, Color.PaleGoldenrod);
+        */
+        //TODO: Don't like this behavior of map.
+        TestMap.DrawBase(primarySpriteBatch,-70,0);
+
+
+        TestMap.RenderRoofs(primarySpriteBatch, TestMap.getLOS(coords,-70,0), -70, 0);
+        //GUI
+        Utils.drawRect(primarySpriteBatch, 0, 0, 70,130, Color.Blue);
+        Utils.drawRect(primarySpriteBatch, 0, 130, 70, 130, Color.Green);
+        Utils.drawRect(primarySpriteBatch, 260 + 70, 0, 70, 130, Color.Purple);
+        Utils.drawRect(primarySpriteBatch, 260 + 70, 130, 70, 130, Color.Orange);
+
+        //Console
+        Utils.drawRect(primarySpriteBatch, 0, 260, 400, 40, Color.Black);
+
+
+        P.Draw(IBMFont, primarySpriteBatch);
+
     }
 
     protected override void AD2LoadContent()
     {
-        IBMFont = new PixelFont("fonts/IBMCGA.xml"); 
+        P = new Player(Color.Blue, 100, 100);
+        IBMFont = new PixelFont("fonts/IBMCGA.xml");
+        TestMap = new OcclusionMap("testmap/testmap.xml",BaseWidth,BaseHeight);
     }
 }
 

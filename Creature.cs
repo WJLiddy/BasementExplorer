@@ -1,6 +1,6 @@
 ﻿abstract class Creature : Entity
 {
-    public static readonly int HPPerStr;
+    public static readonly int HPPerStr = 3;
     protected int HP;
 
     protected int Str;
@@ -30,9 +30,9 @@
         VelocityDirection = velocityDirection;
     }
 
-    public void combat(Creature e)
+    public void combat(Creature e, Direction lastMoveStepDirection)
     {
-        UndoMove();
+        UndoMove(lastMoveStepDirection);
         //Now, have the creatures hurt each other.
         e.Hurt(MeleeDamage());
         Hurt(e.MeleeDamage());
@@ -43,38 +43,30 @@
 
     public abstract int MeleeDamage();
 
-    private void UndoMove()
+    private void UndoMove(Direction lastMoveStep)
     {
         //Step 1: undo the move by the instigating creature.
-        if (VelocityDirection == Direction.N || VelocityDirection == Direction.NW || VelocityDirection == Direction.NE)
-        {
-            Y--;
-            DeltaY = DeltaScale / 2;
-        }
-
-        if (VelocityDirection == Direction.S || VelocityDirection == Direction.SW || VelocityDirection == Direction.SE)
+        if (lastMoveStep == Direction.N)
         {
             Y++;
             DeltaY = DeltaScale / 2;
         }
 
-        //Step 1: undo the move by the instigating creature.
-        if (VelocityDirection == Direction.N || VelocityDirection == Direction.NW || VelocityDirection == Direction.NE)
+        if (lastMoveStep == Direction.S)
         {
             Y--;
             DeltaY = DeltaScale / 2;
         }
 
-        if (VelocityDirection == Direction.W || VelocityDirection == Direction.SW || VelocityDirection == Direction.NW)
-        {
-            X--;
-            DeltaX = DeltaScale / 2;
-        }
-
-
-        if (VelocityDirection == Direction.E || VelocityDirection == Direction.SE || VelocityDirection == Direction.NE)
+        if (lastMoveStep == Direction.W)
         {
             X++;
+            DeltaY = DeltaScale / 2;
+        }
+
+        if (lastMoveStep == Direction.E)
+        {
+            X--;
             DeltaX = DeltaScale / 2;
         }
     }
