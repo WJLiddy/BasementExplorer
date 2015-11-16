@@ -13,7 +13,6 @@ public class BasementExplorer : AD2Game
 
     public BasementExplorer() : base(BaseWidth, BaseHeight, 60)
     {
-        //lol stub constructor
         Renderer.Resolution = Renderer.ResolutionType.WindowedLarge;
     }
 
@@ -33,11 +32,18 @@ public class BasementExplorer : AD2Game
     protected override void AD2Draw(AD2SpriteBatch primarySpriteBatch)
     {
         IBMFont.Draw(primarySpriteBatch, " !\"#$%&'()*+,-./",2,2,Color.White);
-        IBMFont.Draw(primarySpriteBatch, "0123456789:;<=>?", 2, 12, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "@ABCDEFGHIJKLMNO", 2, 22, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "PQRSTUVWXYZ[\\]^_", 2, 32, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "'abcdefghijklmno", 2, 32, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "pqrstuvwxyz{|}~", 2, 32, Color.White);
+        IBMFont.Draw(primarySpriteBatch, "0123456789:;<=>?", 2, 10, Color.White);
+        IBMFont.Draw(primarySpriteBatch, "@ABCDEFGHIJKLMNO", 2, 18, Color.White);
+        IBMFont.Draw(primarySpriteBatch, "PQRSTUVWXYZ[\\]^_", 2, 26, Color.White);
+        IBMFont.Draw(primarySpriteBatch, "'abcdefghijklmno", 2, 34, Color.White);
+        IBMFont.Draw(primarySpriteBatch, "pqrstuvwxyz{|}~", 2, 42, Color.White);
+
+        Utils.drawRect(primarySpriteBatch, 50, 50, 1, 1, Color.Red);
+        Utils.drawRect(primarySpriteBatch, 50, 60, 5, 5, Color.Green);
+        Utils.drawRect(primarySpriteBatch, 50, 70, 1, 5, Color.Blue);
+    
+        Utils.drawRect(primarySpriteBatch, 50, 80, 5, 1, Color.White);
+        Utils.drawRect(primarySpriteBatch, 50, 90, 10, 10, Color.PaleGoldenrod);
     }
 
     protected override void AD2LoadContent()
