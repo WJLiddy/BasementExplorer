@@ -27,6 +27,10 @@ public abstract class Entity
 
     protected Direction VelocityDirection;
 
+    // Entities have friction. High friction enties slide less far than low frition entities.
+    //TODO this is just a test.
+    private double FrictionPercentPerFrame = .1;
+
     public Entity(char symbol, int x, int y, int size)
     {
         Symbol = symbol;
@@ -36,8 +40,9 @@ public abstract class Entity
     }
 
     //Moves the character based on direction. Interact based on these movements.
-    public void Move(LinkedList<Entity> entities, CollisionMap collideMap)
+    public void Update(LinkedList<Entity> entities, CollisionMap collideMap)
     {
+        Velocity = (int)(Velocity * (1.0 - FrictionPercentPerFrame));
         //When moving diagonally,
         //North is moved then the other directions.
         //This is slightly problematic because at high speeds you may glitch through objects because you go in an L-shape.
@@ -61,6 +66,10 @@ public abstract class Entity
     {
         foreach (Entity e in allEnts)
         {
+            //do not interact with self
+            if (e == this)
+                continue;
+
             // Everything we collide with we could possibly interact with. 
             if (BasementExplorer.Collide(X, Y, Size, Size, e.X, e.Y, e.Size, e.Size))
             {

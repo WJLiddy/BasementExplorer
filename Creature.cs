@@ -1,7 +1,8 @@
 ﻿abstract class Creature : Entity
 {
-    public static readonly int HPPerStr = 3;
-    protected int HP;
+    public static readonly int BaseHP = 9;
+    public static readonly int HPPerStr = 4;
+    public int HP { get; protected set; }
 
     protected int Str;
     protected int Dex;
@@ -14,7 +15,7 @@
         Str = str;
         Dex = dex;
         Aff = aff;
-        HP = Str * HPPerStr;
+        HP = MaxHP(); 
     }
 
     public void Hurt(int damage)
@@ -28,15 +29,17 @@
         double knockBackRatio = ((double)damage) / ((double)(Str * HPPerStr));
 
         VelocityDirection = velocityDirection;
+        Velocity = 8000;// * ((int)knockBackRatio);
     }
 
     public void combat(Creature e, Direction lastMoveStepDirection)
     {
+        // Step back to the square we were in before.
         UndoMove(lastMoveStepDirection);
-        //Now, have the creatures hurt each other.
+        // Have the creatures hurt each other.
         e.Hurt(MeleeDamage());
         Hurt(e.MeleeDamage());
-        //Finally, do knockback. Creatures are knockback based.
+        // Finally, do knockback.
         e.KnockBack(MeleeDamage(), VelocityDirection);
         KnockBack(e.MeleeDamage(), Entity.Opposite(VelocityDirection));
     }
@@ -69,5 +72,10 @@
             X--;
             DeltaX = DeltaScale / 2;
         }
+    }
+
+    public int MaxHP()
+    {
+        return BaseHP + (Str* HPPerStr);
     }
 }

@@ -11,9 +11,9 @@ abstract class Enemy : Creature
     public override void Draw(PixelFont f,AD2SpriteBatch sb)
     {
         if (HP > 0)
-            f.Draw(sb, Symbol.ToString(), X, Y, Color.Red);
+            f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset + X, Y, Color.Red);
         else
-            f.Draw(sb, Symbol.ToString(), X, Y, Color.DarkRed);
+            f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset + X, Y, Color.DarkRed);
 
     }
 

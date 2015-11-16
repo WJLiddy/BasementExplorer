@@ -16,7 +16,7 @@ class Player : Creature
             f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset + X, Y, playerColor);
     }
 
-    public void FooMove(KeyboardState ks)
+    public void Input(KeyboardState ks)
     {
         //check diags
         if (ks.IsKeyDown(Keys.Left) && ks.IsKeyDown(Keys.Up))
@@ -40,6 +40,7 @@ class Player : Creature
             Velocity = 700;
         }
 
+        // Check Cardinal
         else if (ks.IsKeyDown(Keys.Left))
         {
             VelocityDirection = Direction.W;
@@ -70,7 +71,7 @@ class Player : Creature
     //To prevent multi-striking, 
     protected override bool Interact(Entity e, Direction lastMoveStepDirection)
     {
-        if(e is Enemy)
+        if(e is Enemy && ((Enemy)e).HP > 0)
         {
             combat((Enemy)e,lastMoveStepDirection);
             return true;
