@@ -24,14 +24,13 @@ class Player : Creature
     {
         if(e is Enemy)
         {
-            int damage = GetMeleeDamage();
-            ((Enemy)e).KnockBack(damage, Velocity, Entity.Opposite(VelocityDirection));
-            ((Enemy)e).Hurt(damage);
+            combat((Enemy)e);
+            return true;
         }
         return false;
     }
 
-    protected int GetMeleeDamage()
+    public override int MeleeDamage()
     {
         return 2;
     }

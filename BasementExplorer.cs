@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 public class BasementExplorer : AD2Game
 {
@@ -35,7 +33,7 @@ public class BasementExplorer : AD2Game
         IBMFont.Draw(primarySpriteBatch, "0123456789:;<=>?", 2, 10, Color.White);
         IBMFont.Draw(primarySpriteBatch, "@ABCDEFGHIJKLMNO", 2, 18, Color.White);
         IBMFont.Draw(primarySpriteBatch, "PQRSTUVWXYZ[\\]^_", 2, 26, Color.White);
-        IBMFont.Draw(primarySpriteBatch, "'abcdefghijklmno", 2, 34, Color.White);
+        IBMFont.Draw(primarySpriteBatch, "`abcdefghijklmno", 2, 34, Color.White);
         IBMFont.Draw(primarySpriteBatch, "pqrstuvwxyz{|}~", 2, 42, Color.White);
 
         Utils.drawRect(primarySpriteBatch, 50, 50, 1, 1, Color.Red);

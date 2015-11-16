@@ -6,9 +6,9 @@ public abstract class Entity
     public char Symbol { get; protected set; }
 
     // The 'X' coordinate of this entity. Manipulated by velocity.
-    public int X { get; private set; }
+    public int X { get; protected set; }
     // The 'Y' coordinate of this entity. Manipulated by velocity.
-    public int Y { get; private set; }
+    public int Y { get; protected set; }
 
     // The Size of this entity.
     public int Size = 0;
