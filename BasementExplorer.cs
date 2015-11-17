@@ -24,7 +24,7 @@ public class BasementExplorer : AD2Game
     //Milliseconds. 1000 / 50 = 20
     public BasementExplorer() : base(BaseWidth, BaseHeight, 20)
     {
-        Renderer.Resolution = Renderer.ResolutionType.FullScreen;
+        Renderer.Resolution = Renderer.ResolutionType.WindowedLarge;
     }
 
     public static bool Collide(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2 )
@@ -38,7 +38,7 @@ public class BasementExplorer : AD2Game
     protected override void AD2Logic(int ms, KeyboardState keyboardState, GamePadState[] gamePadState)
     {
         //Move the player based on Key
-        P.Input(keyboardState);
+        P.InputWalkDirection(keyboardState);
         foreach (Entity e in Entities)
         {
             e.Update(Entities, TestMap);
@@ -95,9 +95,6 @@ public class BasementExplorer : AD2Game
 
         //Console
         Utils.drawRect(primarySpriteBatch, 0, 260, 400, 40, Color.Black);
-
-
-
     }
 
     protected override void AD2LoadContent()
@@ -111,12 +108,20 @@ public class BasementExplorer : AD2Game
         AliveCreatures = new LinkedList<Creature>();
         DeadCreatures = new LinkedList<Creature>();
 
-        Rodent r = new Rodent('h', 30, 30, 0, 20);
-        Entities.AddFirst(P);
-        Entities.AddLast(r);
+        AddCreature(P);
+        //A hamster fights about a little worse than you do. You both get launched a small amount.
+        AddCreature(new Rodent('h', 30, 30, 0, 20));
+        //A god pwns you.
+        AddCreature(new Rodent('G', 80, 200, 100, 100));
+        //You pwn an idler. They should not actually get a str of -2 but whatever.
+        AddCreature(new Rodent('i', 200, 100, -2, 0));
 
-        AliveCreatures.AddFirst(P);
-        AliveCreatures.AddLast(r);
+    }
+
+    private void AddCreature(Creature c)
+    {
+        Entities.AddLast(c);
+        AliveCreatures.AddFirst(c);
     }
 }
 

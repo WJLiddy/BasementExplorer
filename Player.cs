@@ -16,51 +16,25 @@ class Player : Creature
             f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset + X, Y, playerColor);
     }
 
-    public void Input(KeyboardState ks)
+    public void InputWalkDirection(KeyboardState ks)
     {
         //check diags
         if (ks.IsKeyDown(Keys.Left) && ks.IsKeyDown(Keys.Up))
-        {
-            VelocityDirection = Direction.NW;
-            Velocity = 700;
-        }
+            Walk(Direction.NW);
         else if (ks.IsKeyDown(Keys.Right) && ks.IsKeyDown(Keys.Up))
-        {
-            VelocityDirection = Direction.NE;
-            Velocity = 700;
-        }
+            Walk(Direction.NE);
         else if (ks.IsKeyDown(Keys.Left) && ks.IsKeyDown(Keys.Down))
-        {
-            VelocityDirection = Direction.SW;
-            Velocity = 700;
-        }
+            Walk(Direction.SW);
         else if (ks.IsKeyDown(Keys.Right) && ks.IsKeyDown(Keys.Down))
-        {
-            VelocityDirection = Direction.SE;
-            Velocity = 700;
-        }
-
-        // Check Cardinal
+            Walk(Direction.SE);
         else if (ks.IsKeyDown(Keys.Left))
-        {
-            VelocityDirection = Direction.W;
-            Velocity = 700;
-        }
+            Walk(Direction.W);
         else if (ks.IsKeyDown(Keys.Right))
-        {
-            VelocityDirection = Direction.E;
-            Velocity = 700;
-        }
+            Walk(Direction.E);
         else if (ks.IsKeyDown(Keys.Up))
-        {
-            VelocityDirection = Direction.N;
-            Velocity = 700;
-        }
+            Walk(Direction.N);
         else if (ks.IsKeyDown(Keys.Down))
-        {
-            VelocityDirection = Direction.S;
-            Velocity = 700;
-        }
+            Walk(Direction.S);
         else
             Velocity = 0;
     }

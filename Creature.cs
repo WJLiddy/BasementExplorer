@@ -1,9 +1,21 @@
-﻿abstract class Creature : Entity
+﻿using System;
+
+abstract class Creature : Entity
 {
+    public static readonly int MaxLevel = 100;
+
     public static readonly int BaseHP = 9;
     public static readonly int HPPerStr = 4;
+
+    public static readonly int MinMoveSpeed = 400;
+    public static readonly int MaxMoveSpeed = 900;
+
+    public static readonly int MinKnockback = 1000;
+    public static readonly int MaxKnockback = 8000;
+
     public int HP { get; protected set; }
 
+    //100-level-system
     protected int Str;
     protected int Dex;
     protected int Aff;
@@ -25,11 +37,15 @@
 
     public void KnockBack(int damage, Direction velocityDirection)
     {
-        // Knock Back is % of damage.
-        double knockBackRatio = ((double)damage) / ((double)(Str * HPPerStr));
+        // Knock Back is % of damage. Max is 1.0.
+        double knockBackRatio = Math.Min(1.0, (double)damage / MaxHP());
 
         VelocityDirection = velocityDirection;
-        Velocity = 8000;// * ((int)knockBackRatio);
+
+        //The maximum launch speed is ~8000 px, to avoid skipping over things.
+        //And we want a minimum knockback so you actually do get knocked back a bit.
+        Velocity = MinKnockback + (int)((MaxKnockback - MinKnockback) * knockBackRatio);
+        Utils.Log("Velocity : " + Velocity);
     }
 
     public void combat(Creature e, Direction lastMoveStepDirection)
@@ -41,7 +57,7 @@
         Hurt(e.MeleeDamage());
         // Finally, do knockback.
         e.KnockBack(MeleeDamage(), VelocityDirection);
-        KnockBack(e.MeleeDamage(), Entity.Opposite(VelocityDirection));
+        KnockBack(e.MeleeDamage(), Opposite(VelocityDirection));
     }
 
     public abstract int MeleeDamage();
@@ -77,5 +93,20 @@
     public int MaxHP()
     {
         return BaseHP + (Str* HPPerStr);
+    }
+
+    public int Speed()
+    {
+        return MinMoveSpeed + (Dex * ((MaxMoveSpeed - MinMoveSpeed) / MaxLevel));
+    }
+
+    public void Walk(Direction d)
+    {
+        //Assume we have control
+        if (Velocity <= Speed())
+        {
+            VelocityDirection = d;
+            Velocity = Speed();
+        }
     }
 }
