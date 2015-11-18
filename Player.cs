@@ -1,19 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-class Player : Creature
+public class Player : Creature
 {
-    Color playerColor;
+    public Color MainColor;
+    public Color DarkColor;
 
-    public Player(Color c, int x, int y) : base('@',x,y,3,3,3)
+    public Player(string name, Color main, Color dark, int x, int y) : base(name,'@',x,y,3,3,3)
     {
-        playerColor = c;
+        MainColor = main;
+        DarkColor = dark;
     }
 
     public override void Draw(PixelFont f, AD2SpriteBatch sb)
     {
-        if (HP > 0)
-            f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset + X, Y, playerColor);
+        f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset + X, BasementExplorer.MapYOffset + Y, (HP > 0) ? MainColor : DarkColor);
     }
 
     public void InputWalkDirection(KeyboardState ks)

@@ -42,6 +42,8 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="HUD.cs" />
+    <Compile Include="Observer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

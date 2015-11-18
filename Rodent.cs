@@ -1,6 +1,6 @@
 ﻿class Rodent : Enemy
 {
-    public Rodent(char symbol, int x, int y, int str, int dex) : base(symbol,x,y,str,dex,0)
+    public Rodent(string name, char symbol, int x, int y, int str, int dex) : base(name,symbol,x,y,str,dex,0)
     {
         
     }

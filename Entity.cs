@@ -11,7 +11,7 @@ public abstract class Entity
     public int Y { get; protected set; }
 
     // The Size of this entity.
-    public int Size = 0;
+    public int Size { get; private set; }
 
     // Deltas to the next X or Y value. Think of this as "fractional X" and "fractional Y"
     protected int DeltaX = 0;
@@ -28,11 +28,14 @@ public abstract class Entity
     protected Direction VelocityDirection;
 
     // Entities have friction. High friction enties slide less far than low frition entities.
-    //TODO this is just a test.
+    // By default this is just .1, as a test.
     private double FrictionPercentPerFrame = .1;
 
-    public Entity(char symbol, int x, int y, int size)
+    public string Name { get; private set; }
+
+    public Entity(string name, char symbol, int x, int y, int size)
     {
+        Name = name;
         Symbol = symbol;
         X = x;
         Y = y;
@@ -44,16 +47,21 @@ public abstract class Entity
     {
         Velocity = (int)(Velocity * (1.0 - FrictionPercentPerFrame));
         //When moving diagonally,
-        //North is moved then the other directions.
+        //North/South is moved then the other directions.
         //This is slightly problematic because at high speeds you may glitch through objects because you go in an L-shape.
         //move the character
+        //As soon an anything happens we stop doing interactions.
+        //This is to prevent errors such as attacking an enemy twice. One event per update.
         if (VelocityDirection == Direction.N || VelocityDirection == Direction.NW || VelocityDirection == Direction.NE)
         {
             if (MoveNorth(entities,collideMap))
                 return;
         }
-         if (VelocityDirection == Direction.S || VelocityDirection == Direction.SW || VelocityDirection == Direction.SE)
-                MoveSouth(entities,collideMap);
+        if (VelocityDirection == Direction.S || VelocityDirection == Direction.SW || VelocityDirection == Direction.SE)
+        {
+            if (MoveSouth(entities, collideMap))
+                return;
+        }
         if (VelocityDirection == Direction.W || VelocityDirection == Direction.SW || VelocityDirection == Direction.NW)
                  MoveWest(entities,collideMap);
         if (VelocityDirection == Direction.E || VelocityDirection == Direction.SE || VelocityDirection == Direction.NE)
@@ -83,7 +91,7 @@ public abstract class Entity
 
     private bool MoveNorth(LinkedList<Entity> e, CollisionMap c)
     {
-        // Move south.
+        // Move.
         DeltaY -= Velocity;
         //Check for any interactions.
         if (Interactions(e,Direction.N))

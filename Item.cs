@@ -2,7 +2,7 @@
 {
     bool onFloor = true;
 
-    public Item(char symbol, int x, int y, int size) : base (symbol,x,y,size)
+    public Item(string name, char symbol, int x, int y, int size) : base (name, symbol,x,y,size)
     {
 
     }

@@ -6,10 +6,11 @@ public class BasementExplorer : AD2Game
 {
     PixelFont IBMFont;
     OcclusionMap TestMap;
-
+   
     // Some LinkedLists holding all of our entities. This is is not mutually exclusive. 
     // That is things can be in multiple lists.
     Player P;
+    HUD H;
     LinkedList<Entity> Entities;
     LinkedList<Creature> AliveCreatures;
     LinkedList<Creature> DeadCreatures;
@@ -20,6 +21,7 @@ public class BasementExplorer : AD2Game
     public static readonly int BaseHeight = 300;
 
     public static int MapXOffset = 70;
+    public static int MapYOffset = 20;
 
     //Milliseconds. 1000 / 50 = 20
     public BasementExplorer() : base(BaseWidth, BaseHeight, 20)
@@ -57,6 +59,8 @@ public class BasementExplorer : AD2Game
             AliveCreatures.Remove(e);
             DeadCreatures.AddFirst(e);
         }
+
+        H.Update();
     }
 
     protected override void AD2Draw(AD2SpriteBatch primarySpriteBatch)
@@ -65,15 +69,8 @@ public class BasementExplorer : AD2Game
         int[] coord = new int[] { P.X + (P.Size / 2), P.Y + (P.Size / 2) };
         coords.AddFirst(coord);
 
-
-        /**
-        IBMFont.Draw(primarySpriteBatch, " !\"#$%&'()*+,-./",2,2,Color.White);
-        Utils.drawRect(primarySpriteBatch, 50, 60, 5, 5, Color.Green);
-        */
         //TODO: Don't like this behavior of map.
-        TestMap.DrawBase(primarySpriteBatch,-70,0);
-
-
+        TestMap.DrawBase(primarySpriteBatch,-MapXOffset,-MapYOffset);
 
         foreach (Creature e in DeadCreatures)
         {
@@ -86,20 +83,23 @@ public class BasementExplorer : AD2Game
         }
 
 
-        TestMap.RenderRoofs(primarySpriteBatch, TestMap.getLOS(coords,-70,0), -70, 0);
-        //GUI
-        Utils.drawRect(primarySpriteBatch, 0, 0, 70,130, Color.Blue);
-        Utils.drawRect(primarySpriteBatch, 0, 130, 70, 130, Color.Green);
-        Utils.drawRect(primarySpriteBatch, 260 + 70, 0, 70, 130, Color.Purple);
-        Utils.drawRect(primarySpriteBatch, 260 + 70, 130, 70, 130, Color.Orange);
+        //THIS is UGLY.
+        TestMap.RenderRoofs(primarySpriteBatch, TestMap.getLOS(coords,-MapXOffset,-MapYOffset), -MapXOffset, -MapYOffset);
+        
+        //Draw borders around the map.
+        Utils.drawRect(primarySpriteBatch, 0, 0, 70, 300, Color.Black);
+        Utils.drawRect(primarySpriteBatch, 400 - 70, 0, 70, 300, Color.Black);
+        Utils.drawRect(primarySpriteBatch, 0, 0, 400, 20, Color.Black);
+        Utils.drawRect(primarySpriteBatch, 0, 280, 400, 20, Color.Black);
 
-        //Console
-        Utils.drawRect(primarySpriteBatch, 0, 260, 400, 40, Color.Black);
+        H.Draw(IBMFont, primarySpriteBatch);
     }
 
     protected override void AD2LoadContent()
     {
-        P = new Player(Color.Blue, 100, 100);
+        P = new Player("Blue",Color.Blue, new Color(0, 0, 100, 255), 100, 100);
+        H = new HUD(1, new Color(0, 0, 100, 255));
+        P.AddObserver(H);
         IBMFont = new PixelFont("fonts/IBMCGA.xml");
         TestMap = new OcclusionMap("testmap/testmap.xml",BaseWidth,BaseHeight);
 
@@ -110,11 +110,11 @@ public class BasementExplorer : AD2Game
 
         AddCreature(P);
         //A hamster fights about a little worse than you do. You both get launched a small amount.
-        AddCreature(new Rodent('h', 30, 30, 0, 20));
+        AddCreature(new Rodent("Hamster",'h', 30, 30, 0, 20));
         //A god pwns you.
-        AddCreature(new Rodent('G', 80, 200, 100, 100));
+        AddCreature(new Rodent("God",'G', 80, 200, 100, 100));
         //You pwn an idler. They should not actually get a str of -2 but whatever.
-        AddCreature(new Rodent('i', 200, 100, -2, 0));
+        AddCreature(new Rodent("Iguana",'i', 200, 100, -2, 0));
 
     }
 
