@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 public class HUD : Observer
@@ -8,8 +9,6 @@ public class HUD : Observer
     private PrimaryWeapon PrimaryWeaponDisplay;
 
     private Player Player;
-
-    private Color BackColor;
 
     //A Line of text that is revealed over time. Typical RPG fare.
     private class TextLine
@@ -74,12 +73,11 @@ public class HUD : Observer
 
     private MessageQueue Messages;
 
-    public HUD(int playerNumber, Player p, Color backColor)
+    public HUD(int playerNumber, Player p)
     {
 
         Player = p;
         PlayerNumber = playerNumber;
-        BackColor = backColor;
         Messages = new MessageQueue();
     }
 
@@ -91,8 +89,8 @@ public class HUD : Observer
 
     public void Draw(PixelFont f, AD2SpriteBatch sb)
     {
-        Utils.drawRect(sb, 0, 0, 200, 20, BackColor);
-        Utils.drawRect(sb, 0, 0, 70, 150, BackColor);
+        Utils.drawRect(sb, 0, 0, 200, 20, Player.DarkColor);
+        Utils.drawRect(sb, 0, 0, 70, 150, Player.DarkColor);
 
         //print message in message zone.
         f.Draw(sb, Messages.CurrentMessage.RevealedText(), 2, 11, Color.White);
@@ -112,7 +110,14 @@ public class HUD : Observer
 
         PrimaryWeapon primaryDisplay = PrimaryWeaponDisplay == null ? Player.PrimaryWeapon : PrimaryWeaponDisplay;
 
-        f.Draw(sb, primaryDisplay.Name, 2, 38, Color.White, 1);
+        if (PrimaryWeaponDisplay != null)
+        {
+            Utils.drawRect(sb, 0, 37, 70, 59, Player.MainColor);
+
+        }
+
+            f.Draw(sb, primaryDisplay.Name, 2, 38, Color.White, 1);
+
         f.Draw(sb, "Pow:  " + primaryDisplay.Power(Player), 2, 48, Color.White);
         f.Draw(sb, "Acc:  " + primaryDisplay.Accuracy(Player),2,58,Color.White);
         //Special ability here if applicable.

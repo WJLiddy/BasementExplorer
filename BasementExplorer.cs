@@ -105,7 +105,7 @@ public class BasementExplorer : AD2Game
     protected override void AD2LoadContent()
     {
         P = new Player("Blue",Color.Blue, new Color(0, 0, 100, 255), 100, 100);
-        H = new HUD(1, P, new Color(0, 0, 100, 255));
+        H = new HUD(1, P);
         P.AddObserver(H);
         IBMFont = new PixelFont("fonts/IBMCGA.xml");
         TestMap = new OcclusionMap("testmap/testmap.xml",BaseWidth,BaseHeight);
