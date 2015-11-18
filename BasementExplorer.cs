@@ -39,6 +39,9 @@ public class BasementExplorer : AD2Game
 
     protected override void AD2Logic(int ms, KeyboardState keyboardState, GamePadState[] gamePadState)
     {
+
+        H.Update();
+
         //Move the player based on Key
         P.InputWalkDirection(keyboardState);
         foreach (Entity e in Entities)
@@ -60,7 +63,6 @@ public class BasementExplorer : AD2Game
             DeadCreatures.AddFirst(e);
         }
 
-        H.Update();
     }
 
     protected override void AD2Draw(AD2SpriteBatch primarySpriteBatch)
@@ -75,6 +77,11 @@ public class BasementExplorer : AD2Game
         foreach (Creature e in DeadCreatures)
         {
             e.Draw(IBMFont, primarySpriteBatch);
+        }
+
+        foreach (Item i in ItemsOnGround)
+        {
+            i.Draw(IBMFont, primarySpriteBatch);
         }
 
         foreach (Creature e in AliveCreatures)
@@ -107,10 +114,12 @@ public class BasementExplorer : AD2Game
         Entities = new LinkedList<Entity>();
         AliveCreatures = new LinkedList<Creature>();
         DeadCreatures = new LinkedList<Creature>();
+        ItemsOnGround = new LinkedList<Item>();
 
         AddCreature(P);
         AddCreature(new Rodent("Hamster",'h', 30, 30, 0, 20));
         AddCreature(new Rodent("Gerbil", 'g', 40, 30, 2, 20));
+        AddItem(new PrimaryCrit("Stick", '/', Color.Brown, 0, 10, 0, 4, 30, 50, 10));
         //A god pwns you.
         AddCreature(new Rodent("God",'G', 80, 200, 100, 100));
 
@@ -120,6 +129,12 @@ public class BasementExplorer : AD2Game
     {
         Entities.AddLast(c);
         AliveCreatures.AddFirst(c);
+    }
+
+    private void AddItem(Item i)
+    {
+        Entities.AddLast(i);
+        ItemsOnGround.AddFirst(i);
     }
 }
 

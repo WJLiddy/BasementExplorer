@@ -20,6 +20,12 @@ class PrimaryCrit : PrimaryWeapon
             return CritMultiplier * MaxPower;
         }
     }
+
+    public override string SpecialMessage()
+    {
+        return "Crit: " + CritChance;
+    }
+    
 }
 /**
     // Stun: chance enemy cannot move for 1 second.

@@ -60,6 +60,14 @@ public class Player : Creature
             combat((Enemy)e,lastMoveStepDirection);
             return true;
         }
+
+        if(e is PrimaryWeapon && ((PrimaryWeapon)e).OnFloor)
+        {
+            Notify("Standing on", e);
+        }
         return false;
+            
+   //     if(e is Item && ((Item)e).OnFloor && pickUpItemFlag)
+   //         return false;
     }
 }

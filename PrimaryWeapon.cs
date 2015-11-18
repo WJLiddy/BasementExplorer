@@ -62,10 +62,10 @@ public class PrimaryWeapon : Item
         return Math.Max(1, 99 - p.TotalPenalty());
     }
 
-    public string WarningMessage(Creature c)
+    public virtual string WarningMessage(Creature c)
     {
         PenaltySet p = new PenaltySet(this, c);
-        if (p.TotalPenalty() > PenaltyWarningThreshold)
+        if (p.TotalPenalty() < PenaltyWarningThreshold)
             return "";
         switch(p.LimitingStat())
         {
@@ -85,7 +85,7 @@ public class PrimaryWeapon : Item
     public override void Draw(PixelFont f, AD2SpriteBatch sb)
     {
         if (OnFloor)
-            f.Draw(sb, Symbol.ToString(), X, Y, this.Color);
+            f.Draw(sb, Symbol.ToString(), BasementExplorer.MapXOffset +  X, BasementExplorer.MapYOffset + Y, this.Color);
     }
 
     protected override bool Interact(Entity e, Direction lastMoveStepDirection)

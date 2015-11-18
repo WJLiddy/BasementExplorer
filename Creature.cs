@@ -146,6 +146,15 @@ abstract public class Creature : Entity
         }
     }
 
+
+    public void Notify(string message, Object r)
+    {
+        foreach (Observer o in Observers)
+        {
+            o.Observe(message,r);
+        }
+    }
+
     public void Heal(int addHP)
     {
         HP += addHP;

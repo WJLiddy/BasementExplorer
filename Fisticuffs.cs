@@ -26,5 +26,10 @@ public class Fisticuffs : PrimaryWeapon
         return owner.Str;
     }
 
+    public override string WarningMessage(Creature c)
+    {
+        return "";
+    }
 
-}
+
+    }

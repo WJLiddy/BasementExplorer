@@ -5,6 +5,8 @@ public class HUD : Observer
 {
     private int PlayerNumber;
 
+    private PrimaryWeapon PrimaryWeaponDisplay;
+
     private Player Player;
 
     private Color BackColor;
@@ -83,6 +85,7 @@ public class HUD : Observer
 
     public void Update()
     {
+        PrimaryWeaponDisplay = null;
         Messages.Update();
     }
 
@@ -107,13 +110,15 @@ public class HUD : Observer
         //ignore space of last letter.
         f.Draw(sb, HPmsg, 35 - ((f.GetWidth(HPmsg, true) - 2) / 2), 26,Color.White,1,true);
 
-        f.Draw(sb, Player.PrimaryWeapon.Name, 2, 38, Color.White);
-        f.Draw(sb, "Pow:  " + Player.PrimaryWeapon.Power(Player), 2, 48, Color.White);
-        f.Draw(sb, "Acc:  " + Player.PrimaryWeapon.Accuracy(Player),2,58,Color.White);
+        PrimaryWeapon primaryDisplay = PrimaryWeaponDisplay == null ? Player.PrimaryWeapon : PrimaryWeaponDisplay;
+
+        f.Draw(sb, primaryDisplay.Name, 2, 38, Color.White, 1);
+        f.Draw(sb, "Pow:  " + primaryDisplay.Power(Player), 2, 48, Color.White);
+        f.Draw(sb, "Acc:  " + primaryDisplay.Accuracy(Player),2,58,Color.White);
         //Special ability here if applicable.
         //TODO: CRIT, +HP, -HP, STUN,
-        f.Draw(sb, Player.PrimaryWeapon.SpecialMessage(), 2, 68, Color.White);
-        f.Draw(sb, Player.PrimaryWeapon.WarningMessage(Player), 2, 78, Color.Gray);
+        f.Draw(sb, primaryDisplay.SpecialMessage(), 2, 68, Color.White);
+        f.Draw(sb, primaryDisplay.WarningMessage(Player), 2, 78, Color.Gray);
 
         f.Draw(sb, "9 Darts", 2, 98, Color.White);
         f.Draw(sb, "Pow:  99", 2, 108, Color.White);
@@ -140,5 +145,10 @@ public class HUD : Observer
     public override void Observe(string eventMessage)
     {
         Messages.Enqueue(eventMessage);
+    }
+
+    public override void Observe(string eventMessage, object thing)
+    {
+        PrimaryWeaponDisplay = (PrimaryWeapon)thing;
     }
 }
