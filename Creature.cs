@@ -16,13 +16,15 @@ abstract public class Creature : Entity
 
     public int HP { get; protected set; }
 
+    public PrimaryWeapon PrimaryWeapon { get; protected set; }
+
 
     private LinkedList<Observer> Observers;
 
     //100-level-system
-    protected int Str;
-    protected int Dex;
-    protected int Aff;
+    public int Str { get; protected set; }
+    public int Dex { get; protected set; }
+    public int Aff { get; protected set; }
 
 
     //All creatures are respresented by ascii letters, so as a result, they all have size 8.
@@ -32,7 +34,8 @@ abstract public class Creature : Entity
         Str = str;
         Dex = dex;
         Aff = aff;
-        HP = MaxHP(); 
+        HP = MaxHP();
+        PrimaryWeapon = new Fisticuffs();
     }
 
     public void Hurt(Creature source, int damage)
@@ -65,8 +68,8 @@ abstract public class Creature : Entity
     {
         // Step back to the square we were in before.
         UndoMove(lastMoveStepDirection);
-        int thisMeleeDamage = MeleeDamage();
-        int enemyMeleeDamage = e.MeleeDamage();
+        int thisMeleeDamage = PrimaryWeapon.HitDamage(this,e);
+        int enemyMeleeDamage = e.PrimaryWeapon.HitDamage(e,this);
 
         // Have the creatures hurt each other.
         e.Hurt(this,thisMeleeDamage);
@@ -80,8 +83,6 @@ abstract public class Creature : Entity
         e.KnockBack(thisMeleeDamage, VelocityDirection);
         KnockBack(enemyMeleeDamage, Opposite(VelocityDirection));
     }
-
-    public abstract int MeleeDamage();
 
     private void UndoMove(Direction lastMoveStep)
     {
@@ -143,5 +144,11 @@ abstract public class Creature : Entity
         {
             o.Observe(message);
         }
+    }
+
+    public void Heal(int addHP)
+    {
+        HP += addHP;
+        HP = Math.Min(HP, MaxHP());
     }
 }

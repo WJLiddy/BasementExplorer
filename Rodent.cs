@@ -5,11 +5,6 @@
         
     }
 
-    public override int MeleeDamage()
-    {
-        return 1 + (Str / 2);
-    }
-
     protected override bool Interact(Entity e, Direction lastMoveStepDirection)
     {
         // Rodents cannot yet attack so do nothing.

@@ -1,9 +1,12 @@
-﻿abstract class Item : Entity
+﻿using Microsoft.Xna.Framework;
+
+public abstract class Item : Entity
 {
-    bool onFloor = true;
+    public bool OnFloor = true;
+    public Color Color;
 
-    public Item(string name, char symbol, int x, int y, int size) : base (name, symbol,x,y,size)
+    public Item(string name, char symbol, Color color, int x, int y, int size) : base (name, symbol,x,y,size)
     {
-
+        Color = color;
     }
 }

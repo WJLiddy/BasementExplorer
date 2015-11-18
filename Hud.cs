@@ -107,13 +107,13 @@ public class HUD : Observer
         //ignore space of last letter.
         f.Draw(sb, HPmsg, 35 - ((f.GetWidth(HPmsg, true) - 2) / 2), 26,Color.White,1,true);
 
-        f.Draw(sb, "Nothing", 2, 38, Color.White);
-        f.Draw(sb, "Pow:  99", 2, 48, Color.White);
-        f.Draw(sb, "Acc:  99",2,58,Color.White);
+        f.Draw(sb, Player.PrimaryWeapon.Name, 2, 38, Color.White);
+        f.Draw(sb, "Pow:  " + Player.PrimaryWeapon.Power(Player), 2, 48, Color.White);
+        f.Draw(sb, "Acc:  " + Player.PrimaryWeapon.Accuracy(Player),2,58,Color.White);
         //Special ability here if applicable.
         //TODO: CRIT, +HP, -HP, STUN,
-        f.Draw(sb, "Crit: 99", 2, 68, Color.White);
-        f.Draw(sb, "Low DEX", 2, 78, Color.Gray);
+        f.Draw(sb, Player.PrimaryWeapon.SpecialMessage(), 2, 68, Color.White);
+        f.Draw(sb, Player.PrimaryWeapon.WarningMessage(Player), 2, 78, Color.Gray);
 
         f.Draw(sb, "9 Darts", 2, 98, Color.White);
         f.Draw(sb, "Pow:  99", 2, 108, Color.White);

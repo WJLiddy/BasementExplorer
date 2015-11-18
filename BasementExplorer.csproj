@@ -45,10 +45,14 @@
     <Compile Include="HUD.cs" />
     <Compile Include="Observer.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Fisticuffs.cs" />
+    <Compile Include="PrimaryWeapon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BasementExplorer.cs" />
     <Compile Include="Rodent.cs" />
+    <Compile Include="SpecialPrimary\PrimaryHPPlus.cs" />
+    <Compile Include="SpecialPrimary\PrimaryCrit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
