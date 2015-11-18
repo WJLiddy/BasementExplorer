@@ -109,12 +109,10 @@ public class BasementExplorer : AD2Game
         DeadCreatures = new LinkedList<Creature>();
 
         AddCreature(P);
-        //A hamster fights about a little worse than you do. You both get launched a small amount.
         AddCreature(new Rodent("Hamster",'h', 30, 30, 0, 20));
+        AddCreature(new Rodent("Gerbil", 'g', 40, 30, 2, 20));
         //A god pwns you.
         AddCreature(new Rodent("God",'G', 80, 200, 100, 100));
-        //You pwn an idler. They should not actually get a str of -2 but whatever.
-        AddCreature(new Rodent("Iguana",'i', 200, 100, -2, 0));
 
     }
 

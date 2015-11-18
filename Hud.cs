@@ -92,8 +92,8 @@ public class HUD : Observer
         Utils.drawRect(sb, 0, 0, 70, 150, BackColor);
 
         //print message in message zone.
-        f.Draw(sb, Messages.CurrentMessage.RevealedText(), 0, 11, Color.White);
-        f.Draw(sb, Messages.LastMessage.RevealedText(), 0, 1, Color.White);
+        f.Draw(sb, Messages.CurrentMessage.RevealedText(), 2, 11, Color.White);
+        f.Draw(sb, Messages.LastMessage.RevealedText(), 2, 1, Color.White);
 
         //Print HP Bar.
         Utils.drawRect(sb, 1, 23, 67, 13, Color.White);
@@ -102,8 +102,38 @@ public class HUD : Observer
             Utils.drawRect(sb, 2, 24, (int)(65 * ((double)Player.HP / Player.MaxHP())), 11, Color.Red);
         }
 
-        //Print HP. Max is 4 * 100 = 400.
-        f.Draw(sb, Player.HP +"", 4, 26, Color.Black,1,true);
+        string HPmsg = Player.HP +"";
+        //center it up.
+        //ignore space of last letter.
+        f.Draw(sb, HPmsg, 35 - ((f.GetWidth(HPmsg, true) - 2) / 2), 26,Color.White,1,true);
+
+        f.Draw(sb, "Nothing", 2, 38, Color.White);
+        f.Draw(sb, "Pow:  99", 2, 48, Color.White);
+        f.Draw(sb, "Acc:  99",2,58,Color.White);
+        //Special ability here if applicable.
+        //TODO: CRIT, +HP, -HP, STUN,
+        f.Draw(sb, "Crit: 99", 2, 68, Color.White);
+        f.Draw(sb, "Low DEX", 2, 78, Color.Gray);
+
+        f.Draw(sb, "9 Darts", 2, 98, Color.White);
+        f.Draw(sb, "Pow:  99", 2, 108, Color.White);
+        f.Draw(sb, "Range 99", 2, 118, Color.White);
+
+        Utils.drawRect(sb, 24, 129, 12, 12, Color.Yellow);
+        for (int i = 3; i < 62; i = i + 11)
+        {
+            Utils.drawRect(sb, i, 130, 10, 10, Color.Gray);
+        }
+
+        f.Draw(sb, ".", 1+4, 131, Color.White);
+        f.Draw(sb, "=", 1+15, 131, Color.Red);
+        f.Draw(sb, ",", 1+26, 131, Color.Green);
+        f.Draw(sb, "Y", 1+37, 131, Color.Brown);
+
+
+
+        //SElect to move, A for fire, B for context(hover over shows an inforgraphic)
+
     }
 
 
