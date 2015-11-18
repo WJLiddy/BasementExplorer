@@ -5,6 +5,8 @@ public class HUD : Observer
 {
     private int PlayerNumber;
 
+    private Player Player;
+
     private Color BackColor;
 
     //A Line of text that is revealed over time. Typical RPG fare.
@@ -70,8 +72,10 @@ public class HUD : Observer
 
     private MessageQueue Messages;
 
-    public HUD(int playerNumber, Color backColor)
+    public HUD(int playerNumber, Player p, Color backColor)
     {
+
+        Player = p;
         PlayerNumber = playerNumber;
         BackColor = backColor;
         Messages = new MessageQueue();
@@ -90,6 +94,16 @@ public class HUD : Observer
         //print message in message zone.
         f.Draw(sb, Messages.CurrentMessage.RevealedText(), 0, 11, Color.White);
         f.Draw(sb, Messages.LastMessage.RevealedText(), 0, 1, Color.White);
+
+        //Print HP Bar.
+        Utils.drawRect(sb, 1, 23, 67, 13, Color.White);
+        if (Player.HP > 0)
+        {
+            Utils.drawRect(sb, 2, 24, (int)(65 * ((double)Player.HP / Player.MaxHP())), 11, Color.Red);
+        }
+
+        //Print HP. Max is 4 * 100 = 400.
+        f.Draw(sb, Player.HP +"", 4, 26, Color.Black,1,true);
     }
 
 
