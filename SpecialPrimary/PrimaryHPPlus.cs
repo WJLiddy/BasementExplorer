@@ -9,9 +9,9 @@ class HPPlus : PrimaryWeapon
         HPGain = HPgain;
     }
 
-    public override int HitDamage(Creature owner, Creature target)
+    public override int PowerRoll(Creature owner, Creature target)
     {
-        int damage = base.HitDamage(owner, target);
+        int damage = base.PowerRoll(owner, target);
         owner.Heal(damage);
         return damage;
     }

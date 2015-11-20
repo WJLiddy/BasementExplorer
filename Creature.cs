@@ -28,14 +28,14 @@ abstract public class Creature : Entity
 
 
     //All creatures are respresented by ascii letters, so as a result, they all have size 8.
-    public Creature (string name, char symbol, int x, int y, int str, int dex, int aff) : base(name,symbol,x,y,8)
+    public Creature(string name, char symbol, int x, int y, int str, int dex, int aff) : base(name, symbol, x, y, 8)
     {
         Observers = new LinkedList<Observer>();
         Str = str;
         Dex = dex;
         Aff = aff;
         HP = MaxHP();
-        PrimaryWeapon = new Fisticuffs();
+        PrimaryWeapon = null;
     }
 
     public void Hurt(Creature source, int damage)
@@ -68,20 +68,41 @@ abstract public class Creature : Entity
     {
         // Step back to the square we were in before.
         UndoMove(lastMoveStepDirection);
-        int thisMeleeDamage = PrimaryWeapon.HitDamage(this,e);
-        int enemyMeleeDamage = e.PrimaryWeapon.HitDamage(e,this);
 
-        // Have the creatures hurt each other.
-        e.Hurt(this,thisMeleeDamage);
+        // Let us try to fetch the two accuracies first.
+        bool thisHit = PrimaryWeapon == null ? PunchAccuracyRoll() : PrimaryWeapon.AccuracyRoll(this);
+        bool enemyHit = e.PrimaryWeapon == null ? e.PunchAccuracyRoll() : e.PrimaryWeapon.AccuracyRoll(this);
 
-        if(e.HP > 0)
-            Hurt(e,enemyMeleeDamage);
 
-        //If one of them has killed the other, notify
+        if (!thisHit && !enemyHit)
+            //No one hit anyone. So return. 
+            return;
 
-        // Finally, do knockback.
-        e.KnockBack(thisMeleeDamage, VelocityDirection);
-        KnockBack(enemyMeleeDamage, Opposite(VelocityDirection));
+        if (thisHit)
+        { 
+            int thisMeleeDamage = PrimaryWeapon == null ? PunchPowerRoll() : PrimaryWeapon.PowerRoll(this, e);
+            e.Hurt(this, thisMeleeDamage);
+            e.KnockBack(thisMeleeDamage, VelocityDirection);
+        } else
+        {
+            Notify("Missed " + e.Name + ".");
+            e.Notify(Name + " Missed.");
+        }
+
+
+        if (e.HP > 0)
+        {
+            if (enemyHit)
+            {
+                int enemyMeleeDamage = e.PrimaryWeapon == null ? e.PunchPowerRoll() : e.PrimaryWeapon.PowerRoll(e, this);
+                Hurt(e, enemyMeleeDamage);
+                KnockBack(enemyMeleeDamage, Opposite(VelocityDirection));
+            } else
+            {
+                e.Notify("Missed " + Name + ".");
+                Notify(e.Name + " Missed.");
+            }
+        }
     }
 
     private void UndoMove(Direction lastMoveStep)
@@ -140,7 +161,7 @@ abstract public class Creature : Entity
 
     public void Notify(string message)
     {
-        foreach(Observer o in Observers)
+        foreach (Observer o in Observers)
         {
             o.Observe(message);
         }
@@ -151,7 +172,7 @@ abstract public class Creature : Entity
     {
         foreach (Observer o in Observers)
         {
-            o.Observe(message,r);
+            o.Observe(message, r);
         }
     }
 
@@ -159,5 +180,28 @@ abstract public class Creature : Entity
     {
         HP += addHP;
         HP = Math.Min(HP, MaxHP());
+    }
+
+    public int PunchPower()
+    { 
+        return Str;
+    }
+
+
+    public int PunchAccuracy()
+    {
+        //TODO HARDCODED
+        return 75;
+    }
+
+    public bool PunchAccuracyRoll()
+    {
+        // 1 - 100 sided dice.
+        return 1 + (int)(Utils.RandomNumber() * 100) <= PunchAccuracy();
+    }
+
+    public int PunchPowerRoll()
+    {
+        return 1 + (int)(Utils.RandomNumber() * PunchPower());
     }
 }

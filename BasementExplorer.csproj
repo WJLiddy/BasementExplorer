@@ -45,7 +45,6 @@
     <Compile Include="HUD.cs" />
     <Compile Include="Observer.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Fisticuffs.cs" />
     <Compile Include="PrimaryWeapon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

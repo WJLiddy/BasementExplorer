@@ -116,14 +116,24 @@ public class HUD : Observer
 
         }
 
+        if (primaryDisplay != null)
+        {
             f.Draw(sb, primaryDisplay.Name, 2, 38, Color.White, 1);
 
-        f.Draw(sb, "Pow:  " + primaryDisplay.Power(Player), 2, 48, Color.White);
-        f.Draw(sb, "Acc:  " + primaryDisplay.Accuracy(Player),2,58,Color.White);
-        //Special ability here if applicable.
-        //TODO: CRIT, +HP, -HP, STUN,
-        f.Draw(sb, primaryDisplay.SpecialMessage(), 2, 68, Color.White);
-        f.Draw(sb, primaryDisplay.WarningMessage(Player), 2, 78, Color.Gray);
+            f.Draw(sb, "Pow:  " + primaryDisplay.Power(Player), 2, 48, Color.White);
+            f.Draw(sb, "Acc:  " + primaryDisplay.Accuracy(Player), 2, 58, Color.White);
+            //Special ability here if applicable.
+            //TODO: CRIT, +HP, -HP, STUN,
+            f.Draw(sb, primaryDisplay.SpecialMessage(), 2, 68, Color.White);
+            f.Draw(sb, primaryDisplay.WarningMessage(Player), 2, 78, Color.Gray);
+        } else
+        {
+            f.Draw(sb, "Punch", 2, 38, Color.White, 1);
+
+            f.Draw(sb, "Pow:  " + Player.PunchPower(), 2, 48, Color.White);
+            f.Draw(sb, "Acc:  " + (Player).PunchAccuracy(), 2, 58, Color.White);
+
+        }
 
         f.Draw(sb, "9 Darts", 2, 98, Color.White);
         f.Draw(sb, "Pow:  99", 2, 108, Color.White);
@@ -139,11 +149,7 @@ public class HUD : Observer
         f.Draw(sb, "=", 1+15, 131, Color.Red);
         f.Draw(sb, ",", 1+26, 131, Color.Green);
         f.Draw(sb, "Y", 1+37, 131, Color.Brown);
-
-
-
-        //SElect to move, A for fire, B for context(hover over shows an inforgraphic)
-
+ 
     }
 
 

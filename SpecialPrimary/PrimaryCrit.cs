@@ -9,10 +9,10 @@ class PrimaryCrit : PrimaryWeapon
         CritChance = critChance;
     }
 
-    public override int HitDamage(Creature owner, Creature target)
+    public override int PowerRoll(Creature owner, Creature target)
     {
         if(((int)(Utils.RandomNumber() * 100.0)) > CritChance)
-            return base.HitDamage(owner,target);
+            return base.PowerRoll(owner,target);
         else
         {
             owner.Notify("Critical Hit on " + target.Name + "!");

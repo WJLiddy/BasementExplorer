@@ -43,7 +43,7 @@ public class BasementExplorer : AD2Game
         H.Update();
 
         //Move the player based on Key
-        P.InputWalkDirection(keyboardState);
+        P.Input(keyboardState);
         foreach (Entity e in Entities)
         {
             e.Update(Entities, TestMap);

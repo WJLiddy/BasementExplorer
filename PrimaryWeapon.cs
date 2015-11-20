@@ -100,13 +100,19 @@ public class PrimaryWeapon : Item
         return "";
     }
 
-    public virtual int HitDamage(Creature owner, Creature target)
+    public virtual int PowerRoll(Creature owner, Creature target)
     {
         return 1 + (int)(Utils.RandomNumber() * MaxPower);
     }
 
-    public virtual int Power(Creature c)
+    public int Power(Creature c)
     {
         return MaxPower;
     }
+
+    public virtual bool AccuracyRoll(Creature owner)
+    {
+        return (1 + (int)(Utils.RandomNumber() * 100)) <= Accuracy(owner);
+    }
+
 }
