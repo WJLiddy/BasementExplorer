@@ -43,6 +43,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="MapGenerator.cs" />
     <Compile Include="Observer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PrimaryWeapon.cs" />

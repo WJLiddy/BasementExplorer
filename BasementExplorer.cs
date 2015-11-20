@@ -123,6 +123,8 @@ public class BasementExplorer : AD2Game
         //A god pwns you.
         AddCreature(new Rodent("God",'G', 80, 200, 100, 100));
 
+        MapGenerator.Generate();
+
     }
 
     private void AddCreature(Creature c)
