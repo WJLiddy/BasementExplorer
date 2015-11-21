@@ -14,6 +14,8 @@ abstract public class Creature : Entity
     public static readonly int MinKnockback = 1000;
     public static readonly int MaxKnockback = 8000;
 
+    public int Tickets { get; protected set; } = 0;
+
     public int HP { get; protected set; }
 
     public PrimaryWeapon PrimaryWeapon { get; protected set; }
@@ -38,6 +40,16 @@ abstract public class Creature : Entity
         PrimaryWeapon = null;
     }
 
+    public void GiveTickets(int amount)
+    {
+        Tickets += amount;
+    }
+
+    public void TakeTickets(int amount)
+    {
+        Tickets -= amount;
+    }
+
     public void Hurt(Creature source, int damage)
     {
 
@@ -49,6 +61,10 @@ abstract public class Creature : Entity
         {
             Notify("Slain by " + source.Name + "!");
             source.Notify(Name + " has been slain!");
+            if(Tickets > 0)
+                source.Notify("Found $" + Tickets + ".");
+            source.GiveTickets(Tickets);
+            Tickets = 0;
         }
     }
 
@@ -79,7 +95,8 @@ abstract public class Creature : Entity
             return;
 
         if (thisHit)
-        { 
+        {
+            playAttackSound();
             int thisMeleeDamage = PrimaryWeapon == null ? PunchPowerRoll() : PrimaryWeapon.PowerRoll(this, e);
             e.Hurt(this, thisMeleeDamage);
             e.KnockBack(thisMeleeDamage, VelocityDirection);
@@ -94,6 +111,7 @@ abstract public class Creature : Entity
         {
             if (enemyHit)
             {
+                e.playAttackSound();
                 int enemyMeleeDamage = e.PrimaryWeapon == null ? e.PunchPowerRoll() : e.PrimaryWeapon.PowerRoll(e, this);
                 Hurt(e, enemyMeleeDamage);
                 KnockBack(enemyMeleeDamage, Opposite(VelocityDirection));
@@ -102,7 +120,7 @@ abstract public class Creature : Entity
                 e.Notify("Missed " + Name + ".");
                 Notify(e.Name + " Missed.");
             }
-        }
+        } 
     }
 
     private void UndoMove(Direction lastMoveStep)
@@ -203,5 +221,10 @@ abstract public class Creature : Entity
     public int PunchPowerRoll()
     {
         return 1 + (int)(Utils.RandomNumber() * PunchPower());
+    }
+
+    public virtual void playAttackSound()
+    {
+     
     }
 }

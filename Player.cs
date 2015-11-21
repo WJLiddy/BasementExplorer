@@ -87,4 +87,13 @@ public class Player : Creature
         }
         return false;
     }
+
+    public override void playAttackSound()
+    {
+        if (PrimaryWeapon == null)
+            SoundManager.Play("punch.wav");
+        else
+            PrimaryWeapon.PlayStrikeSound();
+
+    }
 }

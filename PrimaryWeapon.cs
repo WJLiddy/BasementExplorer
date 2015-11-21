@@ -115,4 +115,8 @@ public class PrimaryWeapon : Item
         return (1 + (int)(Utils.RandomNumber() * 100)) <= Accuracy(owner);
     }
 
+    public void PlayStrikeSound()
+    {
+        SoundManager.Play("blunt.wav");
+    }
 }
