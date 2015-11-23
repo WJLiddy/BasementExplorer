@@ -89,18 +89,18 @@ public class HUD : Observer
 
     public void Draw(PixelFont f, AD2SpriteBatch sb)
     {
-        Utils.drawRect(sb, 0, 0, 200, 20, Player.DarkColor);
-        Utils.drawRect(sb, 0, 0, 70, 150, Player.DarkColor);
+        Utils.DrawRect(sb, 0, 0, 200, 20, Player.DarkColor);
+        Utils.DrawRect(sb, 0, 0, 70, 150, Player.DarkColor);
 
         //print message in message zone.
         f.Draw(sb, Messages.CurrentMessage.RevealedText(), 2, 11, Color.White);
         f.Draw(sb, Messages.LastMessage.RevealedText(), 2, 1, Color.White);
 
         //Print HP Bar.
-        Utils.drawRect(sb, 1, 23, 67, 13, Color.White);
+        Utils.DrawRect(sb, 1, 23, 67, 13, Color.White);
         if (Player.HP > 0)
         {
-            Utils.drawRect(sb, 2, 24, (int)(65 * ((double)Player.HP / Player.MaxHP())), 11, Color.Red);
+            Utils.DrawRect(sb, 2, 24, (int)(65 * ((double)Player.HP / Player.MaxHP())), 11, Color.Red);
         }
 
         string HPmsg = Player.HP +"";
@@ -112,7 +112,7 @@ public class HUD : Observer
 
         if (PrimaryWeaponDisplay != null)
         {
-            Utils.drawRect(sb, 0, 37, 70, 59, Player.MainColor);
+            Utils.DrawRect(sb, 0, 37, 70, 59, Player.MainColor);
 
         }
 
@@ -139,10 +139,10 @@ public class HUD : Observer
         f.Draw(sb, "Pow:  99", 2, 108, Color.White);
         f.Draw(sb, "Range 99", 2, 118, Color.White);
 
-        Utils.drawRect(sb, 24, 129, 12, 12, Color.Yellow);
+        Utils.DrawRect(sb, 24, 129, 12, 12, Color.Yellow);
         for (int i = 3; i < 62; i = i + 11)
         {
-            Utils.drawRect(sb, i, 130, 10, 10, Color.Gray);
+            Utils.DrawRect(sb, i, 130, 10, 10, Color.Gray);
         }
 
         f.Draw(sb, ".", 1+4, 131, Color.White);

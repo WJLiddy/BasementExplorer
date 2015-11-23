@@ -94,10 +94,10 @@ public class BasementExplorer : AD2Game
         TestMap.RenderRoofs(primarySpriteBatch, TestMap.getLOS(coords,-MapXOffset,-MapYOffset), -MapXOffset, -MapYOffset);
         
         //Draw borders around the map.
-        Utils.drawRect(primarySpriteBatch, 0, 0, 70, 300, Color.Black);
-        Utils.drawRect(primarySpriteBatch, 400 - 70, 0, 70, 300, Color.Black);
-        Utils.drawRect(primarySpriteBatch, 0, 0, 400, 20, Color.Black);
-        Utils.drawRect(primarySpriteBatch, 0, 280, 400, 20, Color.Black);
+        Utils.DrawRect(primarySpriteBatch, 0, 0, 70, 300, Color.Black);
+        Utils.DrawRect(primarySpriteBatch, 400 - 70, 0, 70, 300, Color.Black);
+        Utils.DrawRect(primarySpriteBatch, 0, 0, 400, 20, Color.Black);
+        Utils.DrawRect(primarySpriteBatch, 0, 280, 400, 20, Color.Black);
 
         H.Draw(IBMFont, primarySpriteBatch);
     }
